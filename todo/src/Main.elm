@@ -21,8 +21,8 @@ subscriptions : Model -> Sub Msg
 subscriptions model = Sub.none
 
 -- MODEL
-type alias Model = {todos : List String, input : String}
-type alias TODO = {title : String}
+type alias Model = {todos : List Todo, input : String}
+type alias Todo = {id : Int, title : String, comments : List String, status : Bool}
 
 init : flag -> ( Model, Cmd Msg )
 init _ =
@@ -34,17 +34,22 @@ type Msg = Submit | Input String
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model = 
     case msg of
-        Submit -> ({ model | todos = model.input :: model.todos}, Cmd.none)
+        Submit -> ({ model | todos = Todo (List.length model.todos) model.input [] False :: model.todos}, Cmd.none)
         Input value -> ({ model | input = value}, Cmd.none)
 
 -- VIEW
 view : Model -> Html Msg
 view model = 
-    div[][
+    div[class "c"][
         input[value model.input, onInput Input][],
         button[onClick Submit][text "submit"],
         ul[] (List.map viewTodo model.todos)
         ]
 
-viewTodo : String -> Html Msg
-viewTodo todo = li[][text todo]
+viewTodo : Todo -> Html Msg
+viewTodo todo = div[class "card"]
+    [h4[][text todo.title],
+    ul[](List.map viewComment todo.comments)]
+
+viewComment : String -> Html Msg
+viewComment comment = li[][text comment]
