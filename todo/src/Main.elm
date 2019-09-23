@@ -5,10 +5,9 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Url
 import Debug
+import Html.Keyed as Keyed
 
 -- MAIN
-
-
 main : Program () Model Msg
 main =
   Browser.element
@@ -23,7 +22,7 @@ subscriptions model = Sub.none
 
 -- MODEL
 type alias Model = {todos : List Todo, input : String}
-type alias Todo = {title : String, comments : List String, inputComment : String, status : Bool}
+type alias Todo = {id : Int, title : String, comments : List String, inputComment : String, status : Bool}
 
 init : flag -> ( Model, Cmd Msg )
 init _ =
@@ -39,7 +38,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model = 
     case msg of
         Submit
-         -> ({ model | todos = Todo model.input [] "" False :: model.todos}, Cmd.none)
+         -> ({ model | todos = Todo (List.length model.todos) model.input [] "" False :: model.todos}, Cmd.none)
         Input value
          -> ({ model | input = value}, Cmd.none)
         InputComment index value
@@ -84,11 +83,11 @@ view model =
         ]
 
 viewTodo : Int -> Todo -> Html Msg
-viewTodo index todo = div[class "card"]
+viewTodo index todo = Keyed.node "div"[][(String.fromInt todo.id, div[class "card"]
     [h4[][text todo.title],
     input[onInput (InputComment index)][],
     button[onClick (SubmitComment index todo.inputComment)][text "submit"],
-    ul[](List.map viewComment todo.comments)]
+    ul[](List.map viewComment todo.comments)])]
 
 viewComment : String -> Html Msg
 viewComment comment = li[][text comment]
