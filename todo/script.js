@@ -5266,7 +5266,7 @@ var author$project$Main$viewTodo = F2(
 									]),
 								_List_fromArray(
 									[
-										elm$html$Html$text('submit')
+										elm$html$Html$text('Post Comment')
 									])),
 								A2(
 								elm$html$Html$ul,
@@ -5301,7 +5301,7 @@ var author$project$Main$view = function (model) {
 					]),
 				_List_fromArray(
 					[
-						elm$html$Html$text('submit')
+						elm$html$Html$text('Post Task')
 					])),
 				A2(
 				elm$html$Html$ul,

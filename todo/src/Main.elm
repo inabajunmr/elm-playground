@@ -78,7 +78,7 @@ view : Model -> Html Msg
 view model = 
     div[class "c"][
         input[value model.input, onInput Input][],
-        button[onClick Submit][text "submit"],
+        button[onClick Submit][text "Post Task"],
         ul[] (List.indexedMap viewTodo model.todos)
         ]
 
@@ -86,7 +86,7 @@ viewTodo : Int -> Todo -> Html Msg
 viewTodo index todo = Keyed.node "div"[][(String.fromInt todo.id, div[class "card"]
     [h4[][text todo.title],
     input[onInput (InputComment index)][],
-    button[onClick (SubmitComment index todo.inputComment)][text "submit"],
+    button[onClick (SubmitComment index todo.inputComment)][text "Post Comment"],
     ul[](List.map viewComment todo.comments)])]
 
 viewComment : String -> Html Msg
