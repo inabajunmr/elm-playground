@@ -97,17 +97,18 @@ view model =
         ]
 
 viewTodo : Int -> Todo -> Html Msg
-viewTodo index todo = Keyed.node "div"[][(String.fromInt todo.id, div[class "card"]
+viewTodo index todo =
+    Keyed.node "div"[][(String.fromInt todo.id, div[class "card"]
     [
         div[class "row"][
             h4[class "12 col"][text todo.title]
         ],
-    div[class "row"][
-        input[class "10 col", class "w-100", onInput (InputComment index)][]
-    ],
-    div[class "row"][
-            input [class "1 col", type_ "checkbox", onClick (Done index), checked todo.status ] [],
-        button[class "4 col", onClick (SubmitComment index todo.inputComment), class "btn primary"][text "Post Comment"]
+        div[class "row"][
+            input[class "10 col", class "w-100", onInput (InputComment index)][]
+        ],
+        div[class "row"][
+                input [class "1 col", type_ "checkbox", onClick (Done index), checked todo.status ] [],
+            button[class "4 col", onClick (SubmitComment index todo.inputComment), class "btn primary"][text "Post Comment"]
     ],
     ul[](List.map viewComment todo.comments)])]
 
