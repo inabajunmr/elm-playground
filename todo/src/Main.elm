@@ -32,7 +32,8 @@ init _ =
 type Msg = Submit | 
     Input String | 
     InputComment Int String |
-    SubmitComment Int String
+    SubmitComment Int String |
+    Done Int
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model = 
@@ -63,6 +64,18 @@ update msg model =
                     ({ model | todos = todos}, Cmd.none)    
                 Nothing
                      -> (model, Cmd.none)
+        Done index
+            -> 
+            let todo = get index model.todos
+                in 
+                case todo of
+                Just a
+                    -> let
+                        todos = replace index { a | status = not a.status} model.todos
+                    in
+                    ({ model | todos = todos}, Cmd.none)    
+                Nothing
+                     -> (model, Cmd.none)
 
 replace : Int -> a -> List a -> List a
 replace index val list = List.take index list ++ [val] ++ List.drop (index + 1) list
@@ -77,16 +90,25 @@ get index list = List.head (List.drop index list)
 view : Model -> Html Msg
 view model = 
     div[class "c"][
-        input[value model.input, onInput Input][],
-        button[onClick Submit][text "Post Task"],
+        h1[][text "TodoList"],
+        input[value model.input, onInput Input, class "w-100"][],
+        button[onClick Submit, class "btn primary"][text "Post Task"],
         ul[] (List.indexedMap viewTodo model.todos)
         ]
 
 viewTodo : Int -> Todo -> Html Msg
 viewTodo index todo = Keyed.node "div"[][(String.fromInt todo.id, div[class "card"]
-    [h4[][text todo.title],
-    input[onInput (InputComment index)][],
-    button[onClick (SubmitComment index todo.inputComment)][text "Post Comment"],
+    [
+        div[class "row"][
+            h4[class "12 col"][text todo.title]
+        ],
+    div[class "row"][
+        input[class "10 col", class "w-100", onInput (InputComment index)][]
+    ],
+    div[class "row"][
+            input [class "1 col", type_ "checkbox", onClick (Done index), checked todo.status ] [],
+        button[class "4 col", onClick (SubmitComment index todo.inputComment), class "btn primary"][text "Post Comment"]
+    ],
     ul[](List.map viewComment todo.comments)])]
 
 viewComment : String -> Html Msg
