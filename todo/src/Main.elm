@@ -43,16 +43,8 @@ update msg model =
         Input value
          -> ({ model | input = value}, Cmd.none)
         InputComment index value
-         -> let todo = get index model.todos
-                in 
-                case todo of
-                Just a
-                    -> let
-                        todos = replace index { a | inputComment = value} model.todos
-                    in
-                    ({ model | todos = todos}, Cmd.none)    
-                Nothing
-                     -> (model, Cmd.none)
+         ->
+            ({ model | todos = List.indexedMap (\i todo -> if i == index then { todo | inputComment = value} else todo) model.todos}, Cmd.none)
         SubmitComment index value
          -> let todo = get index model.todos
                 in 
