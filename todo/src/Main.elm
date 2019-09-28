@@ -44,39 +44,17 @@ update msg model =
          -> ({ model | input = value}, Cmd.none)
         InputComment index value
          ->
-            ({ model | todos = List.indexedMap (\i todo -> if i == index then { todo | inputComment = value} else todo) model.todos}, Cmd.none)
+            ({model | todos = replace index (\v -> { v | inputComment = value}) model.todos}, Cmd.none)
         SubmitComment index value
-         -> let todo = get index model.todos
-                in 
-                case todo of
-                Just a
-                    -> let
-                        todos = replace index { a | comments = value :: a.comments} model.todos
-                    in
-                    ({ model | todos = todos}, Cmd.none)    
-                Nothing
-                     -> (model, Cmd.none)
+         ->
+           ({model | todos = replace index (\v -> { v | comments = value :: v.comments}) model.todos}, Cmd.none)
         Done index
             -> 
-            let todo = get index model.todos
-                in 
-                case todo of
-                Just a
-                    -> let
-                        todos = replace index { a | status = not a.status} model.todos
-                    in
-                    ({ model | todos = todos}, Cmd.none)    
-                Nothing
-                     -> (model, Cmd.none)
+            ({model | todos = replace index (\v -> { v | status = not v.status}) model.todos}, Cmd.none)
 
-replace : Int -> a -> List a -> List a
-replace index val list = List.take index list ++ [val] ++ List.drop (index + 1) list
-
-put : Int -> a -> List a -> List a
-put index val list = List.take index list ++ [val] ++ List.drop index list
-
-get : Int -> List a -> Maybe a
-get index list = List.head (List.drop index list)
+replace : Int -> (a -> a) -> List a -> List a
+replace index func list = 
+    List.indexedMap (\i val -> if i == index then func val else val) list
 
 -- VIEW
 view : Model -> Html Msg

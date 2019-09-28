@@ -4801,175 +4801,15 @@ var author$project$Main$Todo = F5(
 	function (id, title, comments, inputComment, status) {
 		return {comments: comments, id: id, inputComment: inputComment, status: status, title: title};
 	});
-var elm$core$List$drop = F2(
-	function (n, list) {
-		drop:
-		while (true) {
-			if (n <= 0) {
-				return list;
-			} else {
-				if (!list.b) {
-					return list;
-				} else {
-					var x = list.a;
-					var xs = list.b;
-					var $temp$n = n - 1,
-						$temp$list = xs;
-					n = $temp$n;
-					list = $temp$list;
-					continue drop;
-				}
-			}
-		}
-	});
-var elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return elm$core$Maybe$Just(x);
-	} else {
-		return elm$core$Maybe$Nothing;
-	}
-};
-var author$project$Main$get = F2(
-	function (index, list) {
-		return elm$core$List$head(
-			A2(elm$core$List$drop, index, list));
-	});
-var elm$core$List$takeReverse = F3(
-	function (n, list, kept) {
-		takeReverse:
-		while (true) {
-			if (n <= 0) {
-				return kept;
-			} else {
-				if (!list.b) {
-					return kept;
-				} else {
-					var x = list.a;
-					var xs = list.b;
-					var $temp$n = n - 1,
-						$temp$list = xs,
-						$temp$kept = A2(elm$core$List$cons, x, kept);
-					n = $temp$n;
-					list = $temp$list;
-					kept = $temp$kept;
-					continue takeReverse;
-				}
-			}
-		}
-	});
-var elm$core$List$takeTailRec = F2(
-	function (n, list) {
-		return elm$core$List$reverse(
-			A3(elm$core$List$takeReverse, n, list, _List_Nil));
-	});
-var elm$core$List$takeFast = F3(
-	function (ctr, n, list) {
-		if (n <= 0) {
-			return _List_Nil;
-		} else {
-			var _n0 = _Utils_Tuple2(n, list);
-			_n0$1:
-			while (true) {
-				_n0$5:
-				while (true) {
-					if (!_n0.b.b) {
-						return list;
-					} else {
-						if (_n0.b.b.b) {
-							switch (_n0.a) {
-								case 1:
-									break _n0$1;
-								case 2:
-									var _n2 = _n0.b;
-									var x = _n2.a;
-									var _n3 = _n2.b;
-									var y = _n3.a;
-									return _List_fromArray(
-										[x, y]);
-								case 3:
-									if (_n0.b.b.b.b) {
-										var _n4 = _n0.b;
-										var x = _n4.a;
-										var _n5 = _n4.b;
-										var y = _n5.a;
-										var _n6 = _n5.b;
-										var z = _n6.a;
-										return _List_fromArray(
-											[x, y, z]);
-									} else {
-										break _n0$5;
-									}
-								default:
-									if (_n0.b.b.b.b && _n0.b.b.b.b.b) {
-										var _n7 = _n0.b;
-										var x = _n7.a;
-										var _n8 = _n7.b;
-										var y = _n8.a;
-										var _n9 = _n8.b;
-										var z = _n9.a;
-										var _n10 = _n9.b;
-										var w = _n10.a;
-										var tl = _n10.b;
-										return (ctr > 1000) ? A2(
-											elm$core$List$cons,
-											x,
-											A2(
-												elm$core$List$cons,
-												y,
-												A2(
-													elm$core$List$cons,
-													z,
-													A2(
-														elm$core$List$cons,
-														w,
-														A2(elm$core$List$takeTailRec, n - 4, tl))))) : A2(
-											elm$core$List$cons,
-											x,
-											A2(
-												elm$core$List$cons,
-												y,
-												A2(
-													elm$core$List$cons,
-													z,
-													A2(
-														elm$core$List$cons,
-														w,
-														A3(elm$core$List$takeFast, ctr + 1, n - 4, tl)))));
-									} else {
-										break _n0$5;
-									}
-							}
-						} else {
-							if (_n0.a === 1) {
-								break _n0$1;
-							} else {
-								break _n0$5;
-							}
-						}
-					}
-				}
-				return list;
-			}
-			var _n1 = _n0.b;
-			var x = _n1.a;
-			return _List_fromArray(
-				[x]);
-		}
-	});
-var elm$core$List$take = F2(
-	function (n, list) {
-		return A3(elm$core$List$takeFast, 0, n, list);
-	});
 var author$project$Main$replace = F3(
-	function (index, val, list) {
-		return _Utils_ap(
-			A2(elm$core$List$take, index, list),
-			_Utils_ap(
-				_List_fromArray(
-					[val]),
-				A2(elm$core$List$drop, index + 1, list)));
+	function (index, func, list) {
+		return A2(
+			elm$core$List$indexedMap,
+			F2(
+				function (i, val) {
+					return _Utils_eq(i, index) ? func(val) : val;
+				}),
+			list);
 	});
 var elm$core$Basics$not = _Basics_not;
 var author$project$Main$update = F2(
@@ -5006,60 +4846,54 @@ var author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
-							todos: A2(
-								elm$core$List$indexedMap,
-								F2(
-									function (i, todo) {
-										return _Utils_eq(i, index) ? _Utils_update(
-											todo,
-											{inputComment: value}) : todo;
-									}),
+							todos: A3(
+								author$project$Main$replace,
+								index,
+								function (v) {
+									return _Utils_update(
+										v,
+										{inputComment: value});
+								},
 								model.todos)
 						}),
 					elm$core$Platform$Cmd$none);
 			case 'SubmitComment':
 				var index = msg.a;
 				var value = msg.b;
-				var todo = A2(author$project$Main$get, index, model.todos);
-				if (todo.$ === 'Just') {
-					var a = todo.a;
-					var todos = A3(
-						author$project$Main$replace,
-						index,
-						_Utils_update(
-							a,
-							{
-								comments: A2(elm$core$List$cons, value, a.comments)
-							}),
-						model.todos);
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{todos: todos}),
-						elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
-				}
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							todos: A3(
+								author$project$Main$replace,
+								index,
+								function (v) {
+									return _Utils_update(
+										v,
+										{
+											comments: A2(elm$core$List$cons, value, v.comments)
+										});
+								},
+								model.todos)
+						}),
+					elm$core$Platform$Cmd$none);
 			default:
 				var index = msg.a;
-				var todo = A2(author$project$Main$get, index, model.todos);
-				if (todo.$ === 'Just') {
-					var a = todo.a;
-					var todos = A3(
-						author$project$Main$replace,
-						index,
-						_Utils_update(
-							a,
-							{status: !a.status}),
-						model.todos);
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{todos: todos}),
-						elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
-				}
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							todos: A3(
+								author$project$Main$replace,
+								index,
+								function (v) {
+									return _Utils_update(
+										v,
+										{status: !v.status});
+								},
+								model.todos)
+						}),
+					elm$core$Platform$Cmd$none);
 		}
 	});
 var author$project$Main$Input = function (a) {
