@@ -4820,6 +4820,7 @@ var author$project$Main$update = F2(
 					_Utils_update(
 						model,
 						{
+							input: '',
 							todos: A2(
 								elm$core$List$cons,
 								A5(
