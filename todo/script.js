@@ -4797,9 +4797,9 @@ var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var author$project$Main$subscriptions = function (model) {
 	return elm$core$Platform$Sub$none;
 };
-var author$project$Main$Todo = F5(
-	function (id, title, comments, inputComment, status) {
-		return {comments: comments, id: id, inputComment: inputComment, status: status, title: title};
+var author$project$Main$Todo = F4(
+	function (title, comments, inputComment, status) {
+		return {comments: comments, inputComment: inputComment, status: status, title: title};
 	});
 var author$project$Main$replace = F3(
 	function (index, func, list) {
@@ -4826,13 +4826,7 @@ var author$project$Main$update = F2(
 							input: '',
 							todos: A2(
 								elm$core$List$cons,
-								A5(
-									author$project$Main$Todo,
-									elm$core$List$length(model.todos),
-									model.input,
-									_List_Nil,
-									'',
-									false),
+								A4(author$project$Main$Todo, model.input, _List_Nil, '', false),
 								model.todos)
 						}),
 					elm$core$Platform$Cmd$none);

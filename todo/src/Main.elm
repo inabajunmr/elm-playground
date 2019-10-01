@@ -38,7 +38,7 @@ type alias Model =
 
 
 type alias Todo =
-    { id : Int, title : String, comments : List String, inputComment : String, status : Bool }
+    { title : String, comments : List String, inputComment : String, status : Bool }
 
 
 init : flag -> ( Model, Cmd Msg )
@@ -66,7 +66,7 @@ update msg model =
                 ( model, Cmd.none )
 
             else
-                ( { model | todos = Todo (List.length model.todos) model.input [] "" False :: model.todos, input = "" }, Cmd.none )
+                ( { model | todos = Todo model.input [] "" False :: model.todos, input = "" }, Cmd.none )
 
         Input value ->
             ( { model | input = value }, Cmd.none )
