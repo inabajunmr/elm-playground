@@ -71,7 +71,7 @@ update msg model =
             ( { model | todos = replace index (\v -> { v | inputComment = value }) model.todos }, Cmd.none )
 
         SubmitComment index value ->
-            ( { model | todos = replace index (\v -> { v | comments = value :: v.comments }) model.todos }, Cmd.none )
+            ( { model | todos = replace index (\v -> { v | comments = value :: v.comments, inputComment = "" }) model.todos }, Cmd.none )
 
         Done index ->
             ( { model | todos = replace index (\v -> { v | status = not v.status }) model.todos }, Cmd.none )

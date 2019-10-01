@@ -4872,7 +4872,8 @@ var author$project$Main$update = F2(
 									return _Utils_update(
 										v,
 										{
-											comments: A2(elm$core$List$cons, value, v.comments)
+											comments: A2(elm$core$List$cons, value, v.comments),
+											inputComment: ''
 										});
 								},
 								model.todos)
