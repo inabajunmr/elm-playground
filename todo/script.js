@@ -4864,7 +4864,7 @@ var author$project$Main$update = F2(
 			case 'SubmitComment':
 				var index = msg.a;
 				var value = msg.b;
-				return _Utils_Tuple2(
+				return elm$core$String$isEmpty(value) ? _Utils_Tuple2(model, elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
