@@ -106,7 +106,7 @@ view : Model -> Html Msg
 view model =
     div [ class "c" ]
         [ h1 [] [ text "TodoList" ]
-        , input [ value model.input, onInput Input, class "w-100" ] []
+        , input [ value model.input, onInput Input, class "card w-100", placeholder "PUT YOUR TODO TITLE" ] []
         , button [ onClick Submit, class "btn primary" ] [ text "Post Task" ]
         , ul [] (List.indexedMap viewTodo model.todos)
         ]
@@ -120,7 +120,7 @@ viewTodo index todo =
                 [ h4 [ class "12 col" ] [ text todo.title ]
                 ]
             , div [ class "row" ]
-                [ input [ class "10 col", class "w-100", onInput (InputComment index), value todo.inputComment ] []
+                [ input [ class "10 col", class "card w-100", onInput (InputComment index), value todo.inputComment, placeholder "PUT COMMENT" ] []
                 ]
             , div [ class "row" ]
                 [ input [ class "1 col", type_ "checkbox", onClick (Done index), checked todo.status ] []

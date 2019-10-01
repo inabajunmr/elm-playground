@@ -5032,6 +5032,7 @@ var elm$html$Html$Attributes$stringProperty = F2(
 			elm$json$Json$Encode$string(string));
 	});
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
+var elm$html$Html$Attributes$placeholder = elm$html$Html$Attributes$stringProperty('placeholder');
 var elm$html$Html$Attributes$type_ = elm$html$Html$Attributes$stringProperty('type');
 var elm$html$Html$Attributes$value = elm$html$Html$Attributes$stringProperty('value');
 var elm$virtual_dom$VirtualDom$Normal = function (a) {
@@ -5131,10 +5132,11 @@ var author$project$Main$viewTodo = F2(
 									_List_fromArray(
 										[
 											elm$html$Html$Attributes$class('10 col'),
-											elm$html$Html$Attributes$class('w-100'),
+											elm$html$Html$Attributes$class('card w-100'),
 											elm$html$Html$Events$onInput(
 											author$project$Main$InputComment(index)),
-											elm$html$Html$Attributes$value(todo.inputComment)
+											elm$html$Html$Attributes$value(todo.inputComment),
+											elm$html$Html$Attributes$placeholder('PUT COMMENT')
 										]),
 									_List_Nil)
 								])),
@@ -5201,7 +5203,8 @@ var author$project$Main$view = function (model) {
 					[
 						elm$html$Html$Attributes$value(model.input),
 						elm$html$Html$Events$onInput(author$project$Main$Input),
-						elm$html$Html$Attributes$class('w-100')
+						elm$html$Html$Attributes$class('card w-100'),
+						elm$html$Html$Attributes$placeholder('PUT YOUR TODO TITLE')
 					]),
 				_List_Nil),
 				A2(
