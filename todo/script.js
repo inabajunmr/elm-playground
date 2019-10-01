@@ -5090,106 +5090,98 @@ var elm$html$Html$Events$onInput = function (tagger) {
 			elm$html$Html$Events$alwaysStop,
 			A2(elm$json$Json$Decode$map, tagger, elm$html$Html$Events$targetValue)));
 };
-var elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
-	return _VirtualDom_keyedNode(
-		_VirtualDom_noScript(tag));
-};
-var elm$html$Html$Keyed$node = elm$virtual_dom$VirtualDom$keyedNode;
 var author$project$Main$viewTodo = F2(
 	function (index, todo) {
-		return A3(
-			elm$html$Html$Keyed$node,
-			'div',
+		return A2(
+			elm$html$Html$div,
 			_List_Nil,
 			_List_fromArray(
 				[
-					_Utils_Tuple2(
-					elm$core$String$fromInt(todo.id),
 					A2(
-						elm$html$Html$div,
-						_List_fromArray(
-							[
-								elm$html$Html$Attributes$class('card')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										elm$html$Html$Attributes$class('row')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										elm$html$Html$h4,
-										_List_fromArray(
-											[
-												elm$html$Html$Attributes$class('12 col')
-											]),
-										_List_fromArray(
-											[
-												elm$html$Html$text(todo.title)
-											]))
-									])),
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										elm$html$Html$Attributes$class('row')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										elm$html$Html$input,
-										_List_fromArray(
-											[
-												elm$html$Html$Attributes$class('10 col'),
-												elm$html$Html$Attributes$class('w-100'),
-												elm$html$Html$Events$onInput(
-												author$project$Main$InputComment(index)),
-												elm$html$Html$Attributes$value(todo.inputComment)
-											]),
-										_List_Nil)
-									])),
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										elm$html$Html$Attributes$class('row')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										elm$html$Html$input,
-										_List_fromArray(
-											[
-												elm$html$Html$Attributes$class('1 col'),
-												elm$html$Html$Attributes$type_('checkbox'),
-												elm$html$Html$Events$onClick(
-												author$project$Main$Done(index)),
-												elm$html$Html$Attributes$checked(todo.status)
-											]),
-										_List_Nil),
-										A2(
-										elm$html$Html$button,
-										_List_fromArray(
-											[
-												elm$html$Html$Attributes$class('4 col'),
-												elm$html$Html$Events$onClick(
-												A2(author$project$Main$SubmitComment, index, todo.inputComment)),
-												elm$html$Html$Attributes$class('btn primary')
-											]),
-										_List_fromArray(
-											[
-												elm$html$Html$text('Post Comment')
-											]))
-									])),
-								A2(
-								elm$html$Html$ul,
-								_List_Nil,
-								A2(elm$core$List$map, author$project$Main$viewComment, todo.comments))
-							])))
+					elm$html$Html$div,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$class('card')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$div,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$class('row')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$h4,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$class('12 col')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text(todo.title)
+										]))
+								])),
+							A2(
+							elm$html$Html$div,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$class('row')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$input,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$class('10 col'),
+											elm$html$Html$Attributes$class('w-100'),
+											elm$html$Html$Events$onInput(
+											author$project$Main$InputComment(index)),
+											elm$html$Html$Attributes$value(todo.inputComment)
+										]),
+									_List_Nil)
+								])),
+							A2(
+							elm$html$Html$div,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$class('row')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									elm$html$Html$input,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$class('1 col'),
+											elm$html$Html$Attributes$type_('checkbox'),
+											elm$html$Html$Events$onClick(
+											author$project$Main$Done(index)),
+											elm$html$Html$Attributes$checked(todo.status)
+										]),
+									_List_Nil),
+									A2(
+									elm$html$Html$button,
+									_List_fromArray(
+										[
+											elm$html$Html$Attributes$class('4 col'),
+											elm$html$Html$Events$onClick(
+											A2(author$project$Main$SubmitComment, index, todo.inputComment)),
+											elm$html$Html$Attributes$class('btn primary')
+										]),
+									_List_fromArray(
+										[
+											elm$html$Html$text('Post Comment')
+										]))
+								])),
+							A2(
+							elm$html$Html$ul,
+							_List_Nil,
+							A2(elm$core$List$map, author$project$Main$viewComment, todo.comments))
+						]))
 				]));
 	});
 var elm$html$Html$h1 = _VirtualDom_node('h1');
