@@ -108,7 +108,7 @@ view model =
         [ h1 [] [ text "TodoList" ]
         , input [ value model.input, onInput Input, class "card w-100", placeholder "PUT YOUR TODO TITLE" ] []
         , button [ onClick Submit, class "btn primary" ] [ text "Post Task" ]
-        , ul [] (List.indexedMap viewTodo model.todos)
+        , div [] (List.indexedMap viewTodo model.todos)
         ]
 
 

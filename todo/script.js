@@ -5219,7 +5219,7 @@ var author$project$Main$view = function (model) {
 						elm$html$Html$text('Post Task')
 					])),
 				A2(
-				elm$html$Html$ul,
+				elm$html$Html$div,
 				_List_Nil,
 				A2(elm$core$List$indexedMap, author$project$Main$viewTodo, model.todos))
 			]));
