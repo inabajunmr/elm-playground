@@ -62,7 +62,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Submit ->
-            ( { model | todos = Todo (List.length model.todos) model.input [] "" False :: model.todos }, Cmd.none )
+            ( { model | todos = Todo (List.length model.todos) model.input [] "" False :: model.todos, input = "" }, Cmd.none )
 
         Input value ->
             ( { model | input = value }, Cmd.none )
