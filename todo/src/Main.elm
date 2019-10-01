@@ -114,7 +114,7 @@ viewTodo index todo =
                     [ h4 [ class "12 col" ] [ text todo.title ]
                     ]
                 , div [ class "row" ]
-                    [ input [ class "10 col", class "w-100", onInput (InputComment index) ] []
+                    [ input [ class "10 col", class "w-100", onInput (InputComment index), value todo.inputComment ] []
                     ]
                 , div [ class "row" ]
                     [ input [ class "1 col", type_ "checkbox", onClick (Done index), checked todo.status ] []
