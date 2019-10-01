@@ -5035,6 +5035,7 @@ var elm$html$Html$Attributes$stringProperty = F2(
 	});
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
 var elm$html$Html$Attributes$type_ = elm$html$Html$Attributes$stringProperty('type');
+var elm$html$Html$Attributes$value = elm$html$Html$Attributes$stringProperty('value');
 var elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -5142,7 +5143,8 @@ var author$project$Main$viewTodo = F2(
 												elm$html$Html$Attributes$class('10 col'),
 												elm$html$Html$Attributes$class('w-100'),
 												elm$html$Html$Events$onInput(
-												author$project$Main$InputComment(index))
+												author$project$Main$InputComment(index)),
+												elm$html$Html$Attributes$value(todo.inputComment)
 											]),
 										_List_Nil)
 									])),
@@ -5187,7 +5189,6 @@ var author$project$Main$viewTodo = F2(
 				]));
 	});
 var elm$html$Html$h1 = _VirtualDom_node('h1');
-var elm$html$Html$Attributes$value = elm$html$Html$Attributes$stringProperty('value');
 var author$project$Main$view = function (model) {
 	return A2(
 		elm$html$Html$div,
