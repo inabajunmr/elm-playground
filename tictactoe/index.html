@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <script src="./script.js"></script>
+    <style>
+        div.s {
+            width: 200px;
+            height: 200px;
+            display: inline-block;
+            border: thin solid;
+            font-size: 10em;
+            text-align: center;
+            margin: auto;
+            line-height: 187px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="elm-node"></div>
+    <script type="text/javascript">
+        Elm.Main.init({
+            node: document.getElementById("elm-node")
+        });	
+    </script>
+</body>
+
+</html>
