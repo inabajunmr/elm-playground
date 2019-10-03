@@ -47,12 +47,14 @@ init _ =
 
 
 type Msg
-    = None
+    = Tap Int Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        Tap index val ->
+            ( Array.set index val model, Cmd.none )
 
 
 
@@ -62,37 +64,41 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ viewCell (Array.get 0 model)
-        , viewCell (Array.get 1 model)
-        , viewCell (Array.get 2 model)
+        [ viewCell 0 model
+        , viewCell 1 model
+        , viewCell 2 model
         , br [] []
-        , viewCell (Array.get 3 model)
-        , viewCell (Array.get 4 model)
-        , viewCell (Array.get 5 model)
+        , viewCell 3 model
+        , viewCell 4 model
+        , viewCell 5 model
         , br [] []
-        , viewCell (Array.get 6 model)
-        , viewCell (Array.get 7 model)
-        , viewCell (Array.get 8 model)
+        , viewCell 6 model
+        , viewCell 7 model
+        , viewCell 8 model
         ]
 
 
-viewCell : Maybe Int -> Html Msg
-viewCell value =
-    case value of
+viewCell : Int -> Model -> Html Msg
+viewCell index model =
+    let
+        value =
+            Array.get index model
+    in
+    div [ class "s", onClick (Tap index 1) ] [ getMark value |> text ]
+
+
+getMark : Maybe Int -> String
+getMark maybe =
+    case maybe of
+        Just val ->
+            if val == -1 then
+                "×"
+
+            else if val == 1 then
+                "○"
+
+            else
+                "-"
+
         Nothing ->
-            div [] []
-
-        Just v ->
-            div [ class "s" ] [ getMark v |> text ]
-
-
-getMark : Int -> String
-getMark val =
-    if val == -1 then
-        "×"
-
-    else if val == 1 then
-        "○"
-
-    else
-        "-"
+            "-"
