@@ -3872,6 +3872,43 @@ function _VirtualDom_dekey(keyedNode)
 
 
 
+var _Bitwise_and = F2(function(a, b)
+{
+	return a & b;
+});
+
+var _Bitwise_or = F2(function(a, b)
+{
+	return a | b;
+});
+
+var _Bitwise_xor = F2(function(a, b)
+{
+	return a ^ b;
+});
+
+function _Bitwise_complement(a)
+{
+	return ~a;
+};
+
+var _Bitwise_shiftLeftBy = F2(function(offset, a)
+{
+	return a << offset;
+});
+
+var _Bitwise_shiftRightBy = F2(function(offset, a)
+{
+	return a >> offset;
+});
+
+var _Bitwise_shiftRightZfBy = F2(function(offset, a)
+{
+	return a >>> offset;
+});
+
+
+
 
 // ELEMENT
 
@@ -4875,18 +4912,65 @@ var elm$html$Html$Attributes$stringProperty = F2(
 	});
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
 var author$project$Main$viewCell = function (value) {
-	return A2(
-		elm$html$Html$div,
-		_List_fromArray(
-			[
-				elm$html$Html$Attributes$class('s')
-			]),
-		_List_fromArray(
-			[
-				elm$html$Html$text(
-				author$project$Main$getMark(value))
-			]));
+	if (value.$ === 'Nothing') {
+		return A2(elm$html$Html$div, _List_Nil, _List_Nil);
+	} else {
+		var v = value.a;
+		return A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('s')
+				]),
+			_List_fromArray(
+				[
+					elm$html$Html$text(
+					author$project$Main$getMark(v))
+				]));
+	}
 };
+var elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var elm$core$Array$bitMask = 4294967295 >>> (32 - elm$core$Array$shiftStep);
+var elm$core$Bitwise$and = _Bitwise_and;
+var elm$core$Elm$JsArray$unsafeGet = _JsArray_unsafeGet;
+var elm$core$Array$getHelp = F3(
+	function (shift, index, tree) {
+		getHelp:
+		while (true) {
+			var pos = elm$core$Array$bitMask & (index >>> shift);
+			var _n0 = A2(elm$core$Elm$JsArray$unsafeGet, pos, tree);
+			if (_n0.$ === 'SubTree') {
+				var subTree = _n0.a;
+				var $temp$shift = shift - elm$core$Array$shiftStep,
+					$temp$index = index,
+					$temp$tree = subTree;
+				shift = $temp$shift;
+				index = $temp$index;
+				tree = $temp$tree;
+				continue getHelp;
+			} else {
+				var values = _n0.a;
+				return A2(elm$core$Elm$JsArray$unsafeGet, elm$core$Array$bitMask & index, values);
+			}
+		}
+	});
+var elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
+var elm$core$Array$tailIndex = function (len) {
+	return (len >>> 5) << 5;
+};
+var elm$core$Basics$ge = _Utils_ge;
+var elm$core$Array$get = F2(
+	function (index, _n0) {
+		var len = _n0.a;
+		var startShift = _n0.b;
+		var tree = _n0.c;
+		var tail = _n0.d;
+		return ((index < 0) || (_Utils_cmp(index, len) > -1)) ? elm$core$Maybe$Nothing : ((_Utils_cmp(
+			index,
+			elm$core$Array$tailIndex(len)) > -1) ? elm$core$Maybe$Just(
+			A2(elm$core$Elm$JsArray$unsafeGet, elm$core$Array$bitMask & index, tail)) : elm$core$Maybe$Just(
+			A3(elm$core$Array$getHelp, startShift, index, tree)));
+	});
 var elm$html$Html$br = _VirtualDom_node('br');
 var author$project$Main$view = function (model) {
 	return A2(
@@ -4894,17 +4978,26 @@ var author$project$Main$view = function (model) {
 		_List_Nil,
 		_List_fromArray(
 			[
-				author$project$Main$viewCell(1),
-				author$project$Main$viewCell(0),
-				author$project$Main$viewCell(0),
+				author$project$Main$viewCell(
+				A2(elm$core$Array$get, 0, model)),
+				author$project$Main$viewCell(
+				A2(elm$core$Array$get, 1, model)),
+				author$project$Main$viewCell(
+				A2(elm$core$Array$get, 2, model)),
 				A2(elm$html$Html$br, _List_Nil, _List_Nil),
-				author$project$Main$viewCell(1),
-				author$project$Main$viewCell(-1),
-				author$project$Main$viewCell(1),
+				author$project$Main$viewCell(
+				A2(elm$core$Array$get, 3, model)),
+				author$project$Main$viewCell(
+				A2(elm$core$Array$get, 4, model)),
+				author$project$Main$viewCell(
+				A2(elm$core$Array$get, 5, model)),
 				A2(elm$html$Html$br, _List_Nil, _List_Nil),
-				author$project$Main$viewCell(-1),
-				author$project$Main$viewCell(1),
-				author$project$Main$viewCell(-1)
+				author$project$Main$viewCell(
+				A2(elm$core$Array$get, 6, model)),
+				author$project$Main$viewCell(
+				A2(elm$core$Array$get, 7, model)),
+				author$project$Main$viewCell(
+				A2(elm$core$Array$get, 8, model))
 			]));
 };
 var elm$browser$Browser$External = function (a) {

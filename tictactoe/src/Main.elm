@@ -62,23 +62,28 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ viewCell 1
-        , viewCell 0
-        , viewCell 0
+        [ viewCell (Array.get 0 model)
+        , viewCell (Array.get 1 model)
+        , viewCell (Array.get 2 model)
         , br [] []
-        , viewCell 1
-        , viewCell -1
-        , viewCell 1
+        , viewCell (Array.get 3 model)
+        , viewCell (Array.get 4 model)
+        , viewCell (Array.get 5 model)
         , br [] []
-        , viewCell -1
-        , viewCell 1
-        , viewCell -1
+        , viewCell (Array.get 6 model)
+        , viewCell (Array.get 7 model)
+        , viewCell (Array.get 8 model)
         ]
 
 
-viewCell : Int -> Html Msg
+viewCell : Maybe Int -> Html Msg
 viewCell value =
-    div [ class "s" ] [ getMark value |> text ]
+    case value of
+        Nothing ->
+            div [] []
+
+        Just v ->
+            div [ class "s" ] [ getMark v |> text ]
 
 
 getMark : Int -> String
