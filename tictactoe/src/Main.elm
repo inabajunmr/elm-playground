@@ -81,27 +81,34 @@ view model =
 viewCell : Int -> Model -> Html Msg
 viewCell index model =
     let
-        value =
+        maybe =
             Array.get index model
+
+        value =
+            case maybe of
+                Just val ->
+                    val
+
+                Nothing ->
+                    0
     in
-    div [ class "s", onClick (Tap index) ] [ getMark value |> text ]
+    if value == 0 then
+        div [ class "s", onClick (Tap index) ] [ getMark value |> text ]
+
+    else
+        div [ class "s" ] [ getMark value |> text ]
 
 
-getMark : Maybe Int -> String
-getMark maybe =
-    case maybe of
-        Just val ->
-            if val == -1 then
-                "×"
+getMark : Int -> String
+getMark val =
+    if val == -1 then
+        "×"
 
-            else if val == 1 then
-                "○"
+    else if val == 1 then
+        "○"
 
-            else
-                "-"
-
-        Nothing ->
-            "-"
+    else
+        "-"
 
 
 getTurn : Array.Array Int -> Int
