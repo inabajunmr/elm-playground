@@ -105,7 +105,7 @@ viewCell index model =
                 Nothing ->
                     0
     in
-    if value == 0 then
+    if value == 0 && judge model == None then
         div [ class "s", onClick (Tap index) ] [ getMark value |> text ]
 
     else
@@ -122,3 +122,59 @@ getMark val =
 
     else
         "-"
+
+
+type JudgeResult
+    = Maru
+    | Batsu
+    | None
+
+
+judge :
+    Array.Array Int
+    -> JudgeResult
+judge model =
+    let
+        patterns =
+            [ ( 0, 1, 2 )
+            , ( 3, 4, 5 )
+            , ( 6, 7, 8 )
+            , ( 0, 3, 6 )
+            , ( 1, 4, 7 )
+            , ( 2, 5, 8 )
+            , ( 0, 4, 8 )
+            , ( 2, 4, 6 )
+            ]
+
+        judgeList =
+            List.map judgeLine (List.map (\v -> getLine v model) patterns)
+    in
+    if List.length (List.filter (\v -> v == Maru) judgeList) > 0 then
+        Maru
+
+    else if List.length (List.filter (\v -> v == Batsu) judgeList) > 0 then
+        Batsu
+
+    else
+        None
+
+
+getLine : ( Int, Int, Int ) -> Array.Array Int -> ( Maybe Int, Maybe Int, Maybe Int )
+getLine ( index1, index2, index3 ) model =
+    ( Array.get index1 model, Array.get index2 model, Array.get index3 model )
+
+
+judgeLine : ( Maybe Int, Maybe Int, Maybe Int ) -> JudgeResult
+judgeLine ( val1, val2, val3 ) =
+    let
+        sum =
+            Maybe.withDefault 0 val1 + Maybe.withDefault 0 val2 + Maybe.withDefault 0 val3
+    in
+    if sum == -3 then
+        Batsu
+
+    else if sum == 3 then
+        Maru
+
+    else
+        None
