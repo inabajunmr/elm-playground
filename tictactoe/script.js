@@ -4890,7 +4890,7 @@ var elm$core$Array$length = function (_n0) {
 var elm$core$Basics$negate = function (n) {
 	return -n;
 };
-var author$project$Main$getTurn = function (model) {
+var author$project$Main$getNextValue = function (model) {
 	var len = elm$core$Array$length(
 		A2(
 			elm$core$Array$filter,
@@ -4959,7 +4959,7 @@ var author$project$Main$update = F2(
 			A3(
 				elm$core$Array$set,
 				index,
-				author$project$Main$getTurn(model),
+				author$project$Main$getNextValue(model),
 				model),
 			elm$core$Platform$Cmd$none);
 	});

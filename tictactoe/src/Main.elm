@@ -54,7 +54,20 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Tap index ->
-            ( Array.set index (getTurn model) model, Cmd.none )
+            ( Array.set index (getNextValue model) model, Cmd.none )
+
+
+getNextValue : Array.Array Int -> Int
+getNextValue model =
+    let
+        len =
+            Array.filter (\v -> v == 0) model |> Array.length
+    in
+    if remainderBy 2 len == 0 then
+        -1
+
+    else
+        1
 
 
 
@@ -109,16 +122,3 @@ getMark val =
 
     else
         "-"
-
-
-getTurn : Array.Array Int -> Int
-getTurn model =
-    let
-        len =
-            Array.filter (\v -> v == 0) model |> Array.length
-    in
-    if remainderBy 2 len == 0 then
-        -1
-
-    else
-        1
