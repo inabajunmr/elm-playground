@@ -47,14 +47,14 @@ init _ =
 
 
 type Msg
-    = Tap Int Int
+    = Tap Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Tap index val ->
-            ( Array.set index val model, Cmd.none )
+        Tap index ->
+            ( Array.set index (getTurn model) model, Cmd.none )
 
 
 
@@ -84,7 +84,7 @@ viewCell index model =
         value =
             Array.get index model
     in
-    div [ class "s", onClick (Tap index 1) ] [ getMark value |> text ]
+    div [ class "s", onClick (Tap index) ] [ getMark value |> text ]
 
 
 getMark : Maybe Int -> String
@@ -102,3 +102,16 @@ getMark maybe =
 
         Nothing ->
             "-"
+
+
+getTurn : Array.Array Int -> Int
+getTurn model =
+    let
+        len =
+            Array.filter (\v -> v == 0) model |> Array.length
+    in
+    if remainderBy 2 len == 0 then
+        -1
+
+    else
+        1
