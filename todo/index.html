@@ -13,7 +13,7 @@
 		node: document.getElementById("elm-node")
 		});	
 		app.ports.saveData.subscribe(function(data) {
-			console.log("test")
+			console.log(data)
             localStorage.setItem("data", JSON.stringify(data))
         })
 	</script>

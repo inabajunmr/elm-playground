@@ -47,20 +47,6 @@ init _ =
     ( { todos = [], input = "" }, Cmd.none )
 
 
-encodeTodos : List Todo -> Json.Encode.Value
-encodeTodos list =
-    Json.Encode.list encodeTodo list
-
-
-encodeTodo : Todo -> Json.Encode.Value
-encodeTodo todo =
-    Json.Encode.object
-        [ ( "title", Json.Encode.string todo.title )
-        , ( "comments", Json.Encode.list Json.Encode.string todo.comments )
-        , ( "status", Json.Encode.bool todo.status )
-        ]
-
-
 
 -- UPDATE
 
@@ -81,7 +67,11 @@ update msg model =
                 ( model, Cmd.none )
 
             else
-                ( { model | todos = Todo model.input [] "" False :: model.todos, input = "" }, saveData (encodeTodos model.todos) )
+                let
+                    updateModel =
+                        { model | todos = Todo model.input [] "" False :: model.todos, input = "" }
+                in
+                ( updateModel, saveData (encodeTodos updateModel.todos) )
 
         Input value ->
             ( { model | input = value }, Cmd.none )
@@ -94,10 +84,18 @@ update msg model =
                 ( model, Cmd.none )
 
             else
-                ( { model | todos = replace index (\v -> { v | comments = value :: v.comments, inputComment = "" }) model.todos }, Cmd.none )
+                let
+                    updateModel =
+                        { model | todos = replace index (\v -> { v | comments = value :: v.comments, inputComment = "" }) model.todos }
+                in
+                ( updateModel, saveData (encodeTodos updateModel.todos) )
 
         Done index ->
-            ( { model | todos = replace index (\v -> { v | status = not v.status }) model.todos }, Cmd.none )
+            let
+                updateModel =
+                    { model | todos = replace index (\v -> { v | status = not v.status }) model.todos }
+            in
+            ( updateModel, saveData (encodeTodos updateModel.todos) )
 
 
 replace : Int -> (a -> a) -> List a -> List a
@@ -111,6 +109,20 @@ replace index func list =
                 val
         )
         list
+
+
+encodeTodos : List Todo -> Json.Encode.Value
+encodeTodos list =
+    Json.Encode.list encodeTodo list
+
+
+encodeTodo : Todo -> Json.Encode.Value
+encodeTodo todo =
+    Json.Encode.object
+        [ ( "title", Json.Encode.string todo.title )
+        , ( "comments", Json.Encode.list Json.Encode.string todo.comments )
+        , ( "status", Json.Encode.bool todo.status )
+        ]
 
 
 port saveData : Json.Encode.Value -> Cmd msg
