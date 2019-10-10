@@ -1,4 +1,4 @@
-module Main exposing (Model, Msg(..), Todo, init, main, replace, subscriptions, update, view, viewComment, viewTodo)
+port module Main exposing (Model, Msg(..), Todo, init, main, replace, subscriptions, update, view, viewComment, viewTodo)
 
 import Browser
 import Browser.Navigation as Nav
@@ -7,6 +7,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Html.Keyed as Keyed
+import Json.Encode
 import Url
 
 
@@ -46,6 +47,20 @@ init _ =
     ( { todos = [], input = "" }, Cmd.none )
 
 
+encodeTodos : List Todo -> Json.Encode.Value
+encodeTodos list =
+    Json.Encode.list encodeTodo list
+
+
+encodeTodo : Todo -> Json.Encode.Value
+encodeTodo todo =
+    Json.Encode.object
+        [ ( "title", Json.Encode.string todo.title )
+        , ( "comments", Json.Encode.list Json.Encode.string todo.comments )
+        , ( "status", Json.Encode.bool todo.status )
+        ]
+
+
 
 -- UPDATE
 
@@ -66,7 +81,7 @@ update msg model =
                 ( model, Cmd.none )
 
             else
-                ( { model | todos = Todo model.input [] "" False :: model.todos, input = "" }, Cmd.none )
+                ( { model | todos = Todo model.input [] "" False :: model.todos, input = "" }, saveData (encodeTodos model.todos) )
 
         Input value ->
             ( { model | input = value }, Cmd.none )
@@ -96,6 +111,9 @@ replace index func list =
                 val
         )
         list
+
+
+port saveData : Json.Encode.Value -> Cmd msg
 
 
 

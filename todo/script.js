@@ -4801,6 +4801,48 @@ var author$project$Main$Todo = F4(
 	function (title, comments, inputComment, status) {
 		return {comments: comments, inputComment: inputComment, status: status, title: title};
 	});
+var elm$json$Json$Encode$bool = _Json_wrap;
+var elm$json$Json$Encode$list = F2(
+	function (func, entries) {
+		return _Json_wrap(
+			A3(
+				elm$core$List$foldl,
+				_Json_addEntry(func),
+				_Json_emptyArray(_Utils_Tuple0),
+				entries));
+	});
+var elm$json$Json$Encode$object = function (pairs) {
+	return _Json_wrap(
+		A3(
+			elm$core$List$foldl,
+			F2(
+				function (_n0, obj) {
+					var k = _n0.a;
+					var v = _n0.b;
+					return A3(_Json_addField, k, v, obj);
+				}),
+			_Json_emptyObject(_Utils_Tuple0),
+			pairs));
+};
+var elm$json$Json$Encode$string = _Json_wrap;
+var author$project$Main$encodeTodo = function (todo) {
+	return elm$json$Json$Encode$object(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				'title',
+				elm$json$Json$Encode$string(todo.title)),
+				_Utils_Tuple2(
+				'comments',
+				A2(elm$json$Json$Encode$list, elm$json$Json$Encode$string, todo.comments)),
+				_Utils_Tuple2(
+				'status',
+				elm$json$Json$Encode$bool(todo.status))
+			]));
+};
+var author$project$Main$encodeTodos = function (list) {
+	return A2(elm$json$Json$Encode$list, author$project$Main$encodeTodo, list);
+};
 var author$project$Main$replace = F3(
 	function (index, func, list) {
 		return A2(
@@ -4811,6 +4853,10 @@ var author$project$Main$replace = F3(
 				}),
 			list);
 	});
+var elm$core$Basics$identity = function (x) {
+	return x;
+};
+var author$project$Main$saveData = _Platform_outgoingPort('saveData', elm$core$Basics$identity);
 var elm$core$Basics$not = _Basics_not;
 var elm$core$String$isEmpty = function (string) {
 	return string === '';
@@ -4829,7 +4875,8 @@ var author$project$Main$update = F2(
 								A4(author$project$Main$Todo, model.input, _List_Nil, '', false),
 								model.todos)
 						}),
-					elm$core$Platform$Cmd$none);
+					author$project$Main$saveData(
+						author$project$Main$encodeTodos(model.todos)));
 			case 'Input':
 				var value = msg.a;
 				return _Utils_Tuple2(
@@ -4910,9 +4957,6 @@ var author$project$Main$SubmitComment = F2(
 	function (a, b) {
 		return {$: 'SubmitComment', a: a, b: b};
 	});
-var elm$core$Basics$identity = function (x) {
-	return x;
-};
 var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
@@ -5014,7 +5058,6 @@ var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$h4 = _VirtualDom_node('h4');
 var elm$html$Html$input = _VirtualDom_node('input');
 var elm$html$Html$ul = _VirtualDom_node('ul');
-var elm$json$Json$Encode$bool = _Json_wrap;
 var elm$html$Html$Attributes$boolProperty = F2(
 	function (key, bool) {
 		return A2(
@@ -5023,7 +5066,6 @@ var elm$html$Html$Attributes$boolProperty = F2(
 			elm$json$Json$Encode$bool(bool));
 	});
 var elm$html$Html$Attributes$checked = elm$html$Html$Attributes$boolProperty('checked');
-var elm$json$Json$Encode$string = _Json_wrap;
 var elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
 		return A2(
