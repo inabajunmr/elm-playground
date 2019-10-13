@@ -7,6 +7,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Html.Keyed as Keyed
+import Json.Decode exposing (Decoder, bool, field, string)
 import Json.Encode
 import Url
 
@@ -15,7 +16,7 @@ import Url
 -- MAIN
 
 
-main : Program () Model Msg
+main : Program Json.Encode.Value Model Msg
 main =
     Browser.element
         { init = init
@@ -42,9 +43,32 @@ type alias Todo =
     { title : String, comments : List String, inputComment : String, status : Bool }
 
 
-init : flag -> ( Model, Cmd Msg )
-init _ =
-    ( { todos = [], input = "" }, Cmd.none )
+init : Json.Encode.Value -> ( Model, Cmd Msg )
+init data =
+    let
+        result =
+            Json.Decode.decodeValue todosDecoder data
+    in
+    case result of
+        Ok val ->
+            ( { todos = val, input = "" }, Cmd.none )
+
+        Err error ->
+            ( { todos = [], input = "" }, Cmd.none )
+
+
+todosDecoder : Json.Decode.Decoder (List Todo)
+todosDecoder =
+    Json.Decode.list todoDecoder
+
+
+todoDecoder : Json.Decode.Decoder Todo
+todoDecoder =
+    Json.Decode.map4 Todo
+        (Json.Decode.field "title" Json.Decode.string)
+        (Json.Decode.field "comments" (Json.Decode.list Json.Decode.string))
+        (Json.Decode.field "inputComment" Json.Decode.string)
+        (Json.Decode.field "status" Json.Decode.bool)
 
 
 
@@ -122,6 +146,7 @@ encodeTodo todo =
         [ ( "title", Json.Encode.string todo.title )
         , ( "comments", Json.Encode.list Json.Encode.string todo.comments )
         , ( "status", Json.Encode.bool todo.status )
+        , ( "inputComment", Json.Encode.string todo.inputComment )
         ]
 
 

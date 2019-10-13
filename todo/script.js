@@ -4870,15 +4870,15 @@ function _Browser_load(url)
 		}
 	}));
 }
-var elm$core$Basics$False = {$: 'False'};
-var elm$core$Basics$True = {$: 'True'};
-var elm$core$Result$isOk = function (result) {
-	if (result.$ === 'Ok') {
-		return true;
-	} else {
-		return false;
-	}
-};
+var author$project$Main$Todo = F4(
+	function (title, comments, inputComment, status) {
+		return {comments: comments, inputComment: inputComment, status: status, title: title};
+	});
+var elm$core$Array$branchFactor = 32;
+var elm$core$Array$Array_elm_builtin = F4(
+	function (a, b, c, d) {
+		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
+	});
 var elm$core$Basics$EQ = {$: 'EQ'};
 var elm$core$Basics$GT = {$: 'GT'};
 var elm$core$Basics$LT = {$: 'LT'};
@@ -4959,11 +4959,6 @@ var elm$core$Array$foldr = F3(
 var elm$core$Array$toList = function (array) {
 	return A3(elm$core$Array$foldr, elm$core$List$cons, _List_Nil, array);
 };
-var elm$core$Array$branchFactor = 32;
-var elm$core$Array$Array_elm_builtin = F4(
-	function (a, b, c, d) {
-		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
-	});
 var elm$core$Basics$ceiling = _Basics_ceiling;
 var elm$core$Basics$fdiv = _Basics_fdiv;
 var elm$core$Basics$logBase = F2(
@@ -5088,6 +5083,7 @@ var elm$core$Array$builderToArray = F2(
 				builder.tail);
 		}
 	});
+var elm$core$Basics$False = {$: 'False'};
 var elm$core$Basics$idiv = _Basics_idiv;
 var elm$core$Basics$lt = _Utils_lt;
 var elm$core$Elm$JsArray$initialize = _JsArray_initialize;
@@ -5139,6 +5135,14 @@ var elm$core$Result$Err = function (a) {
 };
 var elm$core$Result$Ok = function (a) {
 	return {$: 'Ok', a: a};
+};
+var elm$core$Basics$True = {$: 'True'};
+var elm$core$Result$isOk = function (result) {
+	if (result.$ === 'Ok') {
+		return true;
+	} else {
+		return false;
+	}
 };
 var elm$json$Json$Decode$Failure = F2(
 	function (a, b) {
@@ -5345,22 +5349,44 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 			}
 		}
 	});
+var elm$json$Json$Decode$bool = _Json_decodeBool;
+var elm$json$Json$Decode$field = _Json_decodeField;
+var elm$json$Json$Decode$list = _Json_decodeList;
+var elm$json$Json$Decode$map4 = _Json_map4;
+var elm$json$Json$Decode$string = _Json_decodeString;
+var author$project$Main$todoDecoder = A5(
+	elm$json$Json$Decode$map4,
+	author$project$Main$Todo,
+	A2(elm$json$Json$Decode$field, 'title', elm$json$Json$Decode$string),
+	A2(
+		elm$json$Json$Decode$field,
+		'comments',
+		elm$json$Json$Decode$list(elm$json$Json$Decode$string)),
+	A2(elm$json$Json$Decode$field, 'inputComment', elm$json$Json$Decode$string),
+	A2(elm$json$Json$Decode$field, 'status', elm$json$Json$Decode$bool));
+var author$project$Main$todosDecoder = elm$json$Json$Decode$list(author$project$Main$todoDecoder);
 var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
-var author$project$Main$init = function (_n0) {
-	return _Utils_Tuple2(
-		{input: '', todos: _List_Nil},
-		elm$core$Platform$Cmd$none);
+var elm$json$Json$Decode$decodeValue = _Json_run;
+var author$project$Main$init = function (data) {
+	var result = A2(elm$json$Json$Decode$decodeValue, author$project$Main$todosDecoder, data);
+	if (result.$ === 'Ok') {
+		var val = result.a;
+		return _Utils_Tuple2(
+			{input: '', todos: val},
+			elm$core$Platform$Cmd$none);
+	} else {
+		var error = result.a;
+		return _Utils_Tuple2(
+			{input: '', todos: _List_Nil},
+			elm$core$Platform$Cmd$none);
+	}
 };
 var elm$core$Platform$Sub$batch = _Platform_batch;
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var author$project$Main$subscriptions = function (model) {
 	return elm$core$Platform$Sub$none;
 };
-var author$project$Main$Todo = F4(
-	function (title, comments, inputComment, status) {
-		return {comments: comments, inputComment: inputComment, status: status, title: title};
-	});
 var elm$json$Json$Encode$bool = _Json_wrap;
 var elm$json$Json$Encode$list = F2(
 	function (func, entries) {
@@ -5397,7 +5423,10 @@ var author$project$Main$encodeTodo = function (todo) {
 				A2(elm$json$Json$Encode$list, elm$json$Json$Encode$string, todo.comments)),
 				_Utils_Tuple2(
 				'status',
-				elm$json$Json$Encode$bool(todo.status))
+				elm$json$Json$Encode$bool(todo.status)),
+				_Utils_Tuple2(
+				'inputComment',
+				elm$json$Json$Encode$string(todo.inputComment))
 			]));
 };
 var author$project$Main$encodeTodos = function (list) {
@@ -5680,12 +5709,10 @@ var elm$html$Html$Events$stopPropagationOn = F2(
 			event,
 			elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
 	});
-var elm$json$Json$Decode$field = _Json_decodeField;
 var elm$json$Json$Decode$at = F2(
 	function (fields, decoder) {
 		return A3(elm$core$List$foldr, elm$json$Json$Decode$field, decoder, fields);
 	});
-var elm$json$Json$Decode$string = _Json_decodeString;
 var elm$html$Html$Events$targetValue = A2(
 	elm$json$Json$Decode$at,
 	_List_fromArray(
@@ -7797,7 +7824,6 @@ var elm$browser$Debugger$Metadata$Alias = F2(
 	function (args, tipe) {
 		return {args: args, tipe: tipe};
 	});
-var elm$json$Json$Decode$list = _Json_decodeList;
 var elm$browser$Debugger$Metadata$decodeAlias = A3(
 	elm$json$Json$Decode$map2,
 	elm$browser$Debugger$Metadata$Alias,
@@ -8122,7 +8148,6 @@ var elm$browser$Debugger$Metadata$isPortable = function (_n0) {
 			A2(elm$browser$Debugger$Metadata$Error, types.message, problems));
 	}
 };
-var elm$json$Json$Decode$decodeValue = _Json_run;
 var elm$browser$Debugger$Metadata$decode = function (value) {
 	var _n0 = A2(elm$json$Json$Decode$decodeValue, elm$browser$Debugger$Metadata$decoder, value);
 	if (_n0.$ === 'Err') {
@@ -9974,5 +9999,4 @@ var elm$url$Url$fromString = function (str) {
 var elm$browser$Browser$element = _Browser_element;
 var author$project$Main$main = elm$browser$Browser$element(
 	{init: author$project$Main$init, subscriptions: author$project$Main$subscriptions, update: author$project$Main$update, view: author$project$Main$view});
-_Platform_export({'Main':{'init':author$project$Main$main(
-	elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.0"},"types":{"message":"Main.Msg","aliases":{},"unions":{"Main.Msg":{"args":[],"tags":{"Submit":[],"Input":["String.String"],"InputComment":["Basics.Int","String.String"],"SubmitComment":["Basics.Int","String.String"],"Done":["Basics.Int"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
+_Platform_export({'Main':{'init':author$project$Main$main(elm$json$Json$Decode$value)({"versions":{"elm":"0.19.0"},"types":{"message":"Main.Msg","aliases":{},"unions":{"Main.Msg":{"args":[],"tags":{"Submit":[],"Input":["String.String"],"InputComment":["Basics.Int","String.String"],"SubmitComment":["Basics.Int","String.String"],"Done":["Basics.Int"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"String.String":{"args":[],"tags":{"String":[]}}}}})}});}(this));
